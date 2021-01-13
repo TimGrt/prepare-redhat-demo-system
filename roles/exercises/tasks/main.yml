@@ -1,0 +1,48 @@
+---
+
+- name: Create project folder according to Lab guide
+  file:
+    path: "{{ ansible_user_dir }}/ansible-files"
+    state: directory
+
+- name: Create directory structure according to Lab guide
+  file:
+    path: "{{ ansible_user_dir }}/ansible-files/{{ item }}"
+    state: directory
+  loop:
+    - group_vars
+    - host_vars
+    - files
+    - templates
+
+- name: Copy playbooks to destination
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir}}/ansible-files/"
+  loop: # "{{ query('fileglob', role_path + '/files/*.yml') }}"
+    - apache.yml
+    - deploy_index_html.yml
+    - facts.yml
+    - ftpserver.yml
+    - httpd_conf.yml
+    - loop_users.yml
+
+- name: Copy variable files
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ ansible_user_dir}}/ansible-files/{{ item.dest }}"
+  loop:
+    - name: web.yml
+      dest: group_vars
+    - name: node2.yml
+      dest: host_vars
+
+- name: Copy files referenced in playbooks to global files folder
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir}}/ansible-files/files"
+  loop:
+    - web.html
+    - prod_web.html
+    - dev_web.html
+    - httpd.conf

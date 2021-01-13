@@ -1,0 +1,6 @@
+---
+
+- name: Copy Lab Inventory to home directory
+  copy:
+    src: "{{ ansible_user_dir }}/lab_inventory/hosts"
+    dest: "{{ ansible_user_dir }}/inventory"
