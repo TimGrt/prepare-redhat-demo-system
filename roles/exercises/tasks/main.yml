@@ -81,3 +81,10 @@
     - file: vhost_index.html
       dest: files/web.html
 
+- name: Add additional group and host to lab inventory 
+  blockinfile:
+  path: "{{ ansible_user_dir}}/lab_inventory/hosts"
+  block: |
+    [ftpserver]
+    node2 ansible_host={{ lookup('ini', 'node2 re=yes section=web file=hosts') }}
+
