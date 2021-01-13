@@ -12,29 +12,42 @@
   loop:
     - group_vars
     - host_vars
+    - roles
     - files
     - templates
+
+- name: Create directory structure for role exercise according to Lab guide
+  file:
+    path: "{{ ansible_user_dir }}/ansible-files/roles/apache_vhost/{{ item }}"
+    state: directory
+  loop:
+    - tasks
+    - handlers
+    - templates
+    - files
 
 - name: Copy playbooks to destination
   copy:
     src: "{{ item }}"
     dest: "{{ ansible_user_dir}}/ansible-files/"
-  loop: # "{{ query('fileglob', role_path + '/files/*.yml') }}"
+  loop:
     - apache.yml
     - deploy_index_html.yml
     - facts.yml
     - ftpserver.yml
     - httpd_conf.yml
     - loop_users.yml
+    - motd-facts.yml
+    - test_apache_role.yml
 
 - name: Copy variable files
   copy:
-    src: "{{ item.name }}"
+    src: "{{ item.file }}"
     dest: "{{ ansible_user_dir}}/ansible-files/{{ item.dest }}"
   loop:
-    - name: web.yml
+    - file: web.yml
       dest: group_vars
-    - name: node2.yml
+    - file: node2.yml
       dest: host_vars
 
 - name: Copy files referenced in playbooks to global files folder
@@ -46,3 +59,25 @@
     - prod_web.html
     - dev_web.html
     - httpd.conf
+
+- name: Copy templates referenced in playbooks to global templates folder
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir}}/ansible-files/templates"
+  loop:
+    - motd-facts.j2
+
+- name: Copy all files for role exercise to designated directory structure
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ ansible_user_dir}}/ansible-files/roles/apache_vhost/{{ item.dest }}"
+  loop:
+    - file: tasks-main.yml
+      dest: tasks/main.yml
+    - file: handlers-main.yml
+      dest: handlers/main.yml
+    - file: vhost.conf.j2
+      dest: templates/vhost.conf.j2
+    - file: vhost_index.html
+      dest: files/web.html
+
