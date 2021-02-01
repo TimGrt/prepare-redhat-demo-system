@@ -81,10 +81,17 @@
     - file: vhost_index.html
       dest: files/web.html
 
-- name: Add additional group and host to lab inventory 
+# New inventory group needed for Exercise 1.5
+- name: Add additional group with existing host to lab inventory 
   blockinfile:
-  path: "{{ ansible_user_dir}}/lab_inventory/hosts"
-  block: |
-    [ftpserver]
-    node2 ansible_host={{ lookup('ini', 'node2 re=yes section=web file=hosts') }}
+    path: "{{ ansible_user_dir}}/lab_inventory/hosts"
+    block: |
+        [ftpserver]
+        node2 ansible_host={{ lookup('ini', 'node2 re=yes section=web file=' + ansible_user_dir + '/lab_inventory/hosts') }}
+  become: yes
 
+# Copy lab inventory to demonstrate Ansible Vault in Workshop, this file contains a password
+- name: Copy Lab Inventory to home directory
+  copy:
+    src: "{{ ansible_user_dir }}/lab_inventory/hosts"
+    dest: "{{ ansible_user_dir }}/inventory"
