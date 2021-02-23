@@ -5,5 +5,4 @@
 - name: Prepare Lab environment
   hosts: localhost
   roles:
-    - general
     - exercises
