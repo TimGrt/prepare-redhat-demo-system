@@ -1,2 +1,4 @@
 *.yml linguist-detectable
+*.cfg linguist-detectable
+*.conf linguist-detectable
 *.html linguist-detectable=false
