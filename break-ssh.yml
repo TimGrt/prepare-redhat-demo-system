@@ -1,0 +1,36 @@
+---
+
+# This playbook and the following plays are intended to "break" the 
+# current SSH connection to the hosts in the "web" group. The first play creates
+# a new User which should be used for further automation. No ssh public key is provisioned
+# as this should be done as an exercise during the workshop!
+
+- name: Prepare target hosts
+  hosts: web
+  vars:
+    ansible_user: ec2-user
+    ansible_ssh_private_key_file: "~/.ssh/aws-private.pem"
+  tasks:
+    - name: Create new User for Ansible
+      user: 
+        name: ansible
+        state: present
+      become: yes
+
+# The default connection method uses the .ssh/config with the private key of the ec2-user.
+# The lab inventory contains a block which is utilized if the ssh config is not present
+# Both methods should not be used for demo purposes.
+- name: Prepare Ansible controller
+  hosts: control
+  connection: local
+  tasks:
+    - name: Move .ssh/config
+      command:
+        cmd: "mv {{ ansible_user_dir }}/.ssh/config {{ ansible_user_dir }}/.ssh/config.bak"
+        creates: "{{ ansible_user_dir }}/.ssh/config.bak"
+    - name: Remove all:vars block from lab_inventory
+      ini_file:
+        path: "{{ ansible_user_dir }}/lab_inventory/hosts"
+        section: all:vars
+        state: absent
+      become: yes
