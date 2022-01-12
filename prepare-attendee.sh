@@ -6,7 +6,7 @@
 # It also removes a line from the default ansible.cfg
 
 # Own .ssh/config should not be used, move/rename the file
-if [ -f stdout_callback ]; then
+if [ -f ~/.ssh/config ]; then
   mv ~/.ssh/config ~/.ssh/config.bak
 fi
 
