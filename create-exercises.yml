@@ -1,0 +1,8 @@
+---
+
+# This playbook creates all files and folders which the attendees would create doing the exercises
+
+- name: Prepare workshop exercises
+  hosts: localhost
+  roles:
+    - exercises

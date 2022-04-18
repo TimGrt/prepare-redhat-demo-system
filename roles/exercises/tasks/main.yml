@@ -32,13 +32,17 @@
     dest: "{{ ansible_user_dir}}/ansible-files/"
   loop:
     - apache.yml
+    - check_httpd.yml
     - deploy_index_html.yml
     - facts.yml
     - ftpserver.yml
-    - httpd_conf.yml
     - loop_users.yml
     - motd-facts.yml
+    - service_state.yml
+    - setup.yml
+    - setup_filter.yml
     - test_apache_role.yml
+    - user_id.yml
 
 - name: Copy variable files
   copy:
@@ -58,7 +62,6 @@
     - web.html
     - prod_web.html
     - dev_web.html
-    - httpd.conf
 
 - name: Copy templates referenced in playbooks to global templates folder
   copy:
@@ -89,9 +92,3 @@
         [ftpserver]
         node2 ansible_host={{ lookup('ini', 'node2 re=yes section=web file=' + ansible_user_dir + '/lab_inventory/hosts') }}
   become: yes
-
-# Copy lab inventory to demonstrate Ansible Vault in Workshop, this file contains a password
-- name: Copy Lab Inventory to home directory
-  copy:
-    src: "{{ ansible_user_dir }}/lab_inventory/hosts"
-    dest: "{{ ansible_user_dir }}/inventory"

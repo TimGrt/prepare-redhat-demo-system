@@ -1,0 +1,37 @@
+---
+
+- name: Prepare Demo environment with service user
+  hosts: web
+  become: true
+  gather_facts: false
+  vars:
+    ansible_user: "{{ lookup('env', 'USER') }}"
+  pre_tasks:
+    - name: Ensure SSH password is provided
+      assert:
+        that:
+          - ansible_password is defined
+          - ansible_password | length > 0
+        quiet: true
+        fail_msg: "No SSH password is provided. Run the playbook with '--ask-pass'."
+      run_once: true
+  post_tasks:
+    - name: Inventory info
+      ansible.builtin.debug:
+        msg: "Remember to set 'ansible_user=ansible' for the web group and set 'ansible_connection=local' for the control group."
+      run_once: true 
+  tasks:
+    - name: Create Ansible service user
+      ansible.builtin.user:
+        name: ansible
+        state: present
+    - name: Distribute public key of {{ ansible_user }} to service user
+      ansible.posix.authorized_key:
+        user: ansible
+        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+        state: present
+    - name: Add password-less sudo permissions for Ansible service user
+      copy:
+        content: "ansible ALL=(ALL) NOPASSWD:ALL"
+        dest: /etc/sudoers.d/automation
+        validate: /usr/sbin/visudo -csf %s

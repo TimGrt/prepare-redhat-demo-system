@@ -1,8 +1,0 @@
----
-
-# This playbook prepares the Demo environment
-
-- name: Prepare Lab environment
-  hosts: localhost
-  roles:
-    - exercises
