@@ -4,6 +4,6 @@
   become: true
   tasks:
   - name: copy web.html
-    ansible.builtin.copy:
+    copy:
       src: "{{ stage }}_web.html"
       dest: /var/www/html/index.html

@@ -3,8 +3,7 @@
   hosts: node1
   become: true
   tasks:
-    - name: Deploy message of the day file
-      ansible.builtin.template:
+    - template:
         src: motd-facts.j2
         dest: /etc/motd
         owner: root

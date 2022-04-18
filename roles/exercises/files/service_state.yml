@@ -1,0 +1,14 @@
+---
+- name: Check Status
+  hosts: node1
+  become: true
+  vars:
+    package: "httpd"
+
+  tasks:
+    - name: Check status of {{ package }} service
+      ansible.builtin.service_facts:
+      register: service_state
+
+    - ansible.builtin.debug:
+        var: service_state.ansible_facts.services["{{ package }}.service"].state
