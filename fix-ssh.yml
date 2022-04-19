@@ -15,11 +15,6 @@
         quiet: true
         fail_msg: "No SSH password is provided. Run the playbook with '--ask-pass'."
       run_once: true
-  post_tasks:
-    - name: Inventory info
-      ansible.builtin.debug:
-        msg: "Remember to set 'ansible_user=ansible' for the web group and set 'ansible_connection=local' for the control group."
-      run_once: true 
   tasks:
     - name: Create Ansible service user
       ansible.builtin.user:
@@ -35,3 +30,26 @@
         content: "ansible ALL=(ALL) NOPASSWD:ALL"
         dest: /etc/sudoers.d/automation
         validate: /usr/sbin/visudo -csf %s
+
+- name: Adjust inventory file on Ansible control node
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: true
+  vars:
+    lab_user: "{{ lookup('env', 'USER') }}"
+  tasks:
+    - name: Add variable section for web group with ansible_user
+      community.general.ini_file:
+        path: "/home/{{ lab_user }}/lab_inventory/hosts"
+        section: web:vars
+        option: ansible_user
+        value: ansible
+        no_extra_spaces: true
+    - name: Add variable section for control group with ansible_connection
+      community.general.ini_file:
+        path: "/home/{{ lab_user }}/lab_inventory/hosts"
+        section: control:vars
+        option: ansible_connection
+        value: local
+        no_extra_spaces: true
