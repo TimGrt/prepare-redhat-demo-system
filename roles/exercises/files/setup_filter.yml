@@ -1,13 +1,15 @@
 ---
-- name: Capture Setup
+- name: Capture and output facts
   hosts: node1
+  gather_facts: false
   tasks:
     - name: Collect only specific facts
       ansible.builtin.setup:
         filter:
           - 'ansible_eth0'
           - 'ansible_*_mb'
-      register: setup
+      register: setup_output
 
-    - ansible.builtin.debug:
-        var: setup
+    - name: Output variable content
+      ansible.builtin.debug:
+        msg: "{{ setup_output }}"

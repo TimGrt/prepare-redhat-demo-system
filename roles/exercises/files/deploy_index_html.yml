@@ -1,9 +1,10 @@
 ---
-- name: Copy web.html
+- name: Webserver configuration
   hosts: web
   become: true
   tasks:
-  - name: copy web.html
-    ansible.builtin.copy:
-      src: "{{ stage }}_web.html"
-      dest: /var/www/html/index.html
+    - name: Copy web.html
+      ansible.builtin.copy:
+        src: "{{ stage }}_web.html"
+        dest: /var/www/html/index.html
+        mode: "0644"

@@ -2,6 +2,10 @@
 - name: Fill motd file with host data
   hosts: node1
   become: true
+  handlers:
+    - name: Motd_changed
+      ansible.builtin.debug:
+        msg: "The Message of the Day was updated! SSH to node1 and check the content."
   tasks:
     - name: Deploy message of the day file
       ansible.builtin.template:
@@ -9,4 +13,5 @@
         dest: /etc/motd
         owner: root
         group: root
-        mode: 0644
+        mode: "0644"
+      notify: Motd_changed

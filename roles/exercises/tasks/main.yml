@@ -1,14 +1,16 @@
 ---
 
 - name: Create project folder according to Lab guide
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/ansible-files"
     state: directory
+    mode: "0755"
 
 - name: Create directory structure according to Lab guide
-  file:
+  ansible.builtin.file:
     path: "{{ ansible_user_dir }}/ansible-files/{{ item }}"
     state: directory
+    mode: "0755"
   loop:
     - group_vars
     - host_vars
@@ -17,9 +19,10 @@
     - templates
 
 - name: Create directory structure for role exercise according to Lab guide
-  file:
-    path: "{{ ansible_user_dir }}/ansible-files/roles/apache_vhost/{{ item }}"
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/ansible-files/roles/apache-webserver/{{ item }}"
     state: directory
+    mode: "0755"
   loop:
     - tasks
     - handlers
@@ -27,9 +30,10 @@
     - files
 
 - name: Copy playbooks to destination
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir}}/ansible-files/"
+    dest: "{{ ansible_user_dir }}/ansible-files/"
+    mode: "0644"
   loop:
     - apache.yml
     - check_httpd.yml
@@ -45,9 +49,10 @@
     - user_id.yml
 
 - name: Copy variable files
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir}}/ansible-files/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/ansible-files/{{ item.dest }}"
+    mode: "0644"
   loop:
     - file: web.yml
       dest: group_vars
@@ -55,25 +60,28 @@
       dest: host_vars
 
 - name: Copy files referenced in playbooks to global files folder
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir}}/ansible-files/files"
+    dest: "{{ ansible_user_dir }}/ansible-files/files"
+    mode: "0644"
   loop:
     - web.html
     - prod_web.html
     - dev_web.html
 
 - name: Copy templates referenced in playbooks to global templates folder
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir}}/ansible-files/templates"
+    dest: "{{ ansible_user_dir }}/ansible-files/templates"
+    mode: "0644"
   loop:
     - motd-facts.j2
 
 - name: Copy all files for role exercise to designated directory structure
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir}}/ansible-files/roles/apache_vhost/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/ansible-files/roles/apache-webserver/{{ item.dest }}"
+    mode: "0644"
   loop:
     - file: tasks-main.yml
       dest: tasks/main.yml
@@ -81,14 +89,14 @@
       dest: handlers/main.yml
     - file: vhost.conf.j2
       dest: templates/vhost.conf.j2
-    - file: vhost_index.html
+    - file: role-web.html
       dest: files/web.html
 
 # New inventory group needed for Exercise 1.5
-- name: Add additional group with existing host to lab inventory 
-  blockinfile:
-    path: "{{ ansible_user_dir}}/lab_inventory/hosts"
+- name: Add additional group with existing host to lab inventory
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_user_dir }}/lab_inventory/hosts"
     block: |
         [ftpserver]
         node2 ansible_host={{ lookup('ini', 'node2 re=yes section=web file=' + ansible_user_dir + '/lab_inventory/hosts') }}
-  become: yes
+  become: true
