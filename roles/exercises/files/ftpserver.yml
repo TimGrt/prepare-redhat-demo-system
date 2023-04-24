@@ -4,7 +4,16 @@
   become: true
   tasks:
     - name: Install FTP server when host in ftpserver group
-      yum:
+      ansible.builtin.yum:
         name: vsftpd
-        state: latest
+        state: present
       when: inventory_hostname in groups["ftpserver"]
+
+    - name: Get informations about installed packages
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Debug exact version of installed vsFTP package
+      ansible.builtin.debug:
+        msg: "vsFTP is installed in Version {{ ansible_facts.packages.vsftpd.0.version }}"
+      when: ansible_facts.packages.vsftpd is defined

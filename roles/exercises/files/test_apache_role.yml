@@ -1,15 +1,17 @@
 ---
-- name: use apache_vhost role playbook
+- name: Use apache-webserver role
   hosts: node2
   become: true
-
   pre_tasks:
-    - debug:
-        msg: 'Beginning web server configuration.'
+
+    - name: Output info before any role execution
+      ansible.builtin.debug:
+        msg: "Beginning web server configuration."
 
   roles:
-    - apache_vhost
+    - apache-webserver
 
   post_tasks:
-    - debug:
-        msg: 'Web server has been configured.'
+    - name: Output info before all roles are executed
+      ansible.builtin.debug:
+        msg: "Web server has been configured."

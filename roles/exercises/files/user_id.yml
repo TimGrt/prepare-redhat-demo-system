@@ -1,14 +1,14 @@
 ---
-- name: Get user ID
+- name: Get user ID play
   hosts: node1
   vars:
     myuser: "dev_user"
   tasks:
-    - name: Get {{ myuser }} info
+    - name: Get info for {{ myuser }}
       ansible.builtin.getent:
         database: passwd
         key: "{{ myuser }}"
-    - name: Output {{ myuser }} info
+
+    - name: Output info for {{ myuser }}
       ansible.builtin.debug:
-        msg:
-          - "{{ myuser }} uid: {{ getent_passwd['dev_user'].1 }}"
+        msg: "{{ myuser }} uid: {{ getent_passwd[myuser][1] }}"
