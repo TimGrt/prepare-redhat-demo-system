@@ -1,7 +1,6 @@
 ---
 
 - name: "Test NetBox modules"
-  connection: local
   hosts: localhost
   gather_facts: false
   vars:
@@ -19,12 +18,21 @@
           status: Active
           region: Europe
 
-    - name: Create rack
-      netbox.netbox.netbox_rack:
+    # It is expected that all managed nodes use the same OS, therefore only gathering from one host
+    - name: Get facts of all servers in web group
+      ansible.builtin.setup:
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      loop: "{{ groups['web'] }}"
+
+    - name: Add OS platform
+      netbox.netbox.netbox_platform:
         data:
-          name: "{{ workshop_slug | upper }}"
-          site: rh_demo_environment
-        state: present
+          name: "{{ os_distributor }} {{ os_version }}"
+          slug: "{{ os_distributor | lower }}_{{ os_version }}"
+      vars:
+        os_distributor: "{{ hostvars[groups['web'][0]]['ansible_distribution'] }}"
+        os_version: "{{ hostvars[groups['web'][0]]['ansible_distribution_version'] }}"
 
     - name: Create tenant group
       netbox.netbox.netbox_tenant_group:
@@ -40,11 +48,25 @@
           tenant_group: cc_workshop
         state: present
 
-    - name: Create device within NetBox with only required information
-      netbox.netbox.netbox_device:
+    - name: Create VM cluster
+      netbox.netbox.netbox_cluster:
         data:
-          name: Test Device
-          device_type: r750
-          device_role: Application Server
+          name: Student 1 VMs
+          cluster_type: Amazon Web Services
           site: rh_demo_environment
+          tenant: student1
+
+    - name: Create VM
+      netbox.netbox.netbox_virtual_machine:
+        data:
+          name: "{{ hostvars[item]['ansible_fqdn'] }}"
+          site: rh_demo_environment
+          cluster: Student 1 VMs
+          platform: "{{ hostvars[item]['ansible_distribution'] | lower }}_{{ hostvars[item]['ansible_distribution_version'] }}"
+          vcpus: "{{ hostvars[item]['ansible_processor_vcpus'] }}"
+          memory: "{{ hostvars[item]['ansible_memtotal_mb'] }}"
+          disk: "{{ hostvars[item]['ansible_devices']['nvme0n1']['size'] | split(' ') | first | int }}"
+          virtual_machine_role: application-server
+          status: Active
         state: present
+      loop: "{{ groups['web'] }}"
