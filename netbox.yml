@@ -1,0 +1,50 @@
+---
+
+- name: "Test NetBox modules"
+  connection: local
+  hosts: localhost
+  gather_facts: false
+  vars:
+    workshop_slug: rh6f44
+  module_defaults:
+    group/netbox.netbox.netbox:
+      netbox_url: https://demo.netbox.dev/
+      netbox_token: a5f4a71aac44d1a6c87443a6feb7912205c42c6f
+  tasks:
+    - name: Create site for Workshop
+      netbox.netbox.netbox_site:
+        data:
+          name: RH Demo environment
+          slug: rh_demo_environment
+          status: Active
+          region: Europe
+
+    - name: Create rack
+      netbox.netbox.netbox_rack:
+        data:
+          name: "{{ workshop_slug | upper }}"
+          site: rh_demo_environment
+        state: present
+
+    - name: Create tenant group
+      netbox.netbox.netbox_tenant_group:
+        data:
+          name: CC Workshop
+          slug: cc_workshop
+        state: present
+
+    - name: Create tenant for my user
+      netbox.netbox.netbox_tenant:
+        data:
+          name: student1
+          tenant_group: cc_workshop
+        state: present
+
+    - name: Create device within NetBox with only required information
+      netbox.netbox.netbox_device:
+        data:
+          name: Test Device
+          device_type: r750
+          device_role: Application Server
+          site: rh_demo_environment
+        state: present
