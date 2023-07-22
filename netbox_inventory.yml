@@ -1,0 +1,10 @@
+plugin: netbox.netbox.nb_inventory
+api_endpoint: https://demo.netbox.dev/
+token: d126c7cdfdcecd469e230ad4014032f331e50110
+group_by:
+  - platforms
+keyed_groups:
+  - prefix: status
+    key: status.value
+query_filters:
+  - tag: student-2-vm
