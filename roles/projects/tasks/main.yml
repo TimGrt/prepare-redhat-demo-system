@@ -1,0 +1,5 @@
+---
+
+- ansible.builtin.import_tasks: grafana.yml  # noqa name[missing]
+- ansible.builtin.import_tasks: aci.yml  # noqa name[missing]
+- ansible.builtin.import_tasks: netbox.yml  # noqa name[missing]

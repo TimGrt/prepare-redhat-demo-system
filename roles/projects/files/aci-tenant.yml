@@ -1,0 +1,8 @@
+---
+- name: Create tenant
+  cisco.aci.aci_tenant:
+    host: "{{ ansible_host }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    name: demo-tenant-tg
+    state: present

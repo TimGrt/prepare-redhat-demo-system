@@ -5,4 +5,5 @@
 - name: Prepare workshop exercises
   hosts: localhost
   roles:
-    - exercises
+    - ansible-basics
+    - projects

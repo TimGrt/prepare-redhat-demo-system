@@ -1,0 +1,6 @@
+---
+
+- ansible.builtin.import_tasks: tenant.yml
+- ansible.builtin.import_tasks: application-profile.yml
+- ansible.builtin.import_tasks: epgs.yml
+- ansible.builtin.import_tasks: contracts.yml

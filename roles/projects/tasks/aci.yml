@@ -1,0 +1,47 @@
+---
+
+- name: Create project folder according to Lab guide
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/aci-automation"
+    state: directory
+    mode: "0755"
+
+- name: Create directory structure according to Lab guide
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/aci-automation/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - host_vars/sandbox-apic
+    - roles/apic/tasks
+
+- name: Copy inventory file for project exercise to designated directory structure
+  ansible.builtin.copy:
+    src: aci-inventory.ini
+    dest: "{{ ansible_user_dir }}/aci-automation/inventory.ini"
+    mode: "0644"
+
+- name: Copy all other files for project exercise to designated directory structure
+  ansible.builtin.copy:
+    src: "{{ item.file }}"
+    dest: "{{ ansible_user_dir }}/aci-automation/{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - file: sandbox-apic-vars.yml
+      dest: host_vars/sandbox-apic/connection.yml
+    - file: aci-vault.yml
+      dest: host_vars/sandbox-apic/vault.yml
+    - file: aci-playbook.yml
+      dest: main.yml
+    - file: aci-tasks.yml
+      dest: roles/apic/tasks/main.yml
+    - file: aci-tenant.yml
+      dest: roles/apic/tasks/tenant.yml
+    - file: aci-application-profile.yml
+      dest: roles/apic/tasks/application-profile.yml
+    - file: aci-epgs.yml
+      dest: roles/apic/tasks/epgs.yml
+    - file: aci-contracts.yml
+      dest: roles/apic/tasks/contracts.yml
+  loop_control:
+    label: "{{ item.dest }}"
