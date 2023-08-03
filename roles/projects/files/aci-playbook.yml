@@ -1,0 +1,7 @@
+---
+- name: ACI automation with Ansible
+  hosts: apic
+  gather_facts: no
+  roles:
+    - aci-tenant
+    - aci-contract
