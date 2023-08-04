@@ -1,0 +1,18 @@
+---
+
+- name: Prepare RHPDS workshop environment with all "Ansible Basics" exercises
+  hosts: localhost
+  vars:
+    # Input controller host and password here or via extra_vars."
+    controller_host: https://student1.rh0555.example.opentlc.com
+    controller_password: "DEGj0eRxO1z1Gm"
+  pre_tasks:
+    - name: Install necessary collections
+      community.general.ansible_galaxy_install:
+        type: collection
+        name: "{{ item }}"
+      loop:
+        - community.general
+        - awx.awx
+  roles:
+    - automation-platform

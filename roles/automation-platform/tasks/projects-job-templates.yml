@@ -1,0 +1,53 @@
+---
+
+- name: Add Workshop project
+  awx.awx.project:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    name: Workshop Project
+    organization: Default
+    default_environment: Default execution environment
+    scm_type: git
+    scm_url: https://github.com/ansible/workshop-examples.git
+    scm_update_on_launch: true
+    scm_delete_on_update: true
+    scm_clean: true
+    state: present
+
+- name: Create job template
+  awx.awx.job_template:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    name: Install Apache
+    job_type: run
+    organization: Default
+    inventory: Workshop Inventory
+    project: Workshop Project
+    execution_environment: Default execution environment
+    playbook: rhel/apache/apache_install.yml
+    credentials:
+      - Workshop Credential
+    limit: web
+    become_enabled: true
+
+- name: Run job template, waiting for completion
+  awx.awx.job_launch:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    job_template: Install Apache
+    wait: true
+
+- name: Run ad-hoc command to check httpd with command module, this is the challenge lab
+  awx.awx.ad_hoc_command:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    inventory: Workshop Inventory
+    limit: "node1,node2,node3"
+    module_name: command
+    module_args: systemctl status httpd
+    execution_environment: Default execution environment
+    credential: Workshop Credential

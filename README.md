@@ -7,38 +7,50 @@ It creates the desired directory structure and deploys all files and playbooks, 
 
 Clone the repository into the home folder:
 
-```bash
-[student1@ansible-1]$ git clone http://gitlab.ccloud.ninja/tgruetzmacher/prepare-redhat-demo-system.git
+```console
+git clone https://github.com/TimGrt/prepare-redhat-demo-system
 ```
 
-Deploy all files and folder, which are created during the workshop.
+Deploy all files and folder, which are created during the workshop, either for every workshop topic or all at once.
 
-```bash
-[student1@ansible-1]$ ansible-playbook create-exercises.yml
+```console
+ansible-playbook create-ansible-basics-exercises.yml
 ```
 
-The playbooks are not run, only the files are deployed.
+```console
+ansible-playbook create-automation-platform-exercises.yml
+```
+
+```console
+ansible-playbook create-projects-exercises.yml
+```
+
+```console
+ansible-playbook create-all-exercises.yml
+```
+
+The exercises for Automation Platform are executed, all other playbooks are not run, only the files are deployed.
 
 ## SSH connection
 
-The exercises [1.2 - The Ansible basics - Prepare Infrastructure](https://timgrt.github.io/Ansible-Workshop-Exercises/day1/ansible-core/ansible-core-basics/#step-1-prepare-infrastructure) is intended to break the initially working SSH connection to all managed nodes (you will end up as the *ec2-user* on all nodes, configured by `~/.ssh/config`). This is no "Real World" setup and is adjusted during the exercise.
+The *bonus* exercises [Ansible Basics - Bonus Lab 1 - Prepare Infrastructure](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-core/ansible-core-supplemental/#bonus-lab-1-prepare-infrastructure) is intended to break the initially working SSH connection to all managed nodes (you will end up as the *ec2-user* on all nodes, configured by `~/.ssh/config`). This is no "Real World" setup and is adjusted during the exercise.
 
 Install required collections (`fix-ssh.yml` playbook uses module of *posix* collection):
 
-```bash
+```console
 [student1@ansible-1]$ ansible-galaxy collection install -r requirements.yml
 ```
 
 To break the initially working SSH connection (this is done as part of the exercise), download the script and execute it:
 
-```bash
+```console
 [student1@ansible-1 ~]$ wget -q https://raw.githubusercontent.com/TimGrt/prepare-redhat-demo-system/master/break-ssh.sh
-[student1@ansible-1 ~]$ sh break-ssh.sh 
+[student1@ansible-1 ~]$ sh break-ssh.sh
 ```
 
 To "fix" the SSH connection, use the following playbook. It creates a service user on all hosts after breaking the SSH connection with the previous script. You have to provide the Workshop password, this is used as the SSH password to all nodes:
 
-```bash
+```console
 [student1@ansible-1]$ ansible-playbook fix-ssh.yml --ask-pass
 ```
 

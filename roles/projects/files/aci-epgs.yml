@@ -1,0 +1,23 @@
+---
+
+- name: Add all Endpoint groups
+  cisco.aci.aci_epg:
+    host: "{{ ansible_host }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: false
+    tenant: demo-tenant-tg
+    ap: workshop
+    epg: "{{ item.epg_name }}"
+    description: "{{ item.epg_description }}"
+    monitoring_policy: default
+    state: present
+  loop:
+    - epg_name: web
+      epg_description: Web EPG
+    - epg_name: app
+      epg_description: app EPG
+    - epg_name: db
+      epg_description: DB EPG
+  loop_control:
+    label: "{{ item.epg_name }}"

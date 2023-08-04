@@ -1,0 +1,21 @@
+---
+- name: ACI automation with Ansible for Workshop
+  hosts: apic
+  gather_facts: false
+  pre_tasks:
+    - name: Query infos about APIC
+      cisco.aci.aci_system:
+        host: "{{ ansible_host }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: false
+        state: query
+      register: apic_system_info
+
+    - name: Output infos about APIC when running with -v or more
+      ansible.builtin.debug:
+        msg: "{{ apic_system_info }}"
+        verbosity: 1
+
+  roles:
+    - apic

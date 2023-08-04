@@ -1,0 +1,21 @@
+---
+# The repo config file is in the 'files' folder
+- name: Add Grafana Yum repository
+  ansible.builtin.copy:
+    src: grafana.repo
+    dest: etc yum.repos.d grafana.repo
+  become: true
+
+- name: Install Grafana
+  ansible.builtin.yum:
+    name: grafana
+    state: present
+  become: true
+
+- name: Start Grafana
+  ansible.builtin.systemd:
+    name: grafana server
+    daemon_reload: true
+    state: started
+    enabled: true
+  become: true

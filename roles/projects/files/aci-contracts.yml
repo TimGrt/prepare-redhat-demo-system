@@ -1,0 +1,20 @@
+---
+
+- name: Get all contracts of Tenant common
+  cisco.aci.aci_contract:
+    host: "{{ ansible_host }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: false
+    tenant: "common"
+    state: query
+  register: common_contracts
+
+- name: Install dependency for json_query filter
+  ansible.builtin.pip:
+    name: jmespath
+    executable: pip3.9
+
+- name: Output list of common contracts
+  ansible.builtin.debug:
+    msg: "{{ common_contracts | json_query('current[0].fvTenant.children[*].vzBrCP.attributes.name') }}"
