@@ -1,5 +1,19 @@
 ---
 
 - ansible.builtin.import_tasks: grafana.yml  # noqa name[missing]
+  tags:
+    - projects
+    - grafana
+    - linux
+
 - ansible.builtin.import_tasks: aci.yml  # noqa name[missing]
+  tags:
+    - projects
+    - aci
+    - network
+
 - ansible.builtin.import_tasks: netbox.yml  # noqa name[missing]
+  tags:
+    - projects
+    - netbox
+    - dcim

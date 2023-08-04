@@ -32,7 +32,7 @@
     - file: aci-vault.yml
       dest: host_vars/sandbox-apic/vault.yml
     - file: aci-playbook.yml
-      dest: main.yml
+      dest: aci-automation.yml
     - file: aci-tasks.yml
       dest: roles/apic/tasks/main.yml
     - file: aci-tenant.yml

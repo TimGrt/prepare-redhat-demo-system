@@ -7,8 +7,8 @@
   vars:
     ansible_user: "{{ lookup('env', 'USER') }}"
   pre_tasks:
-    - name: Ensure SSH password is provided
-      assert:
+    - name: Ensure SSH password is provided  # noqa run-once[task]
+      ansible.builtin.assert:
         that:
           - ansible_password is defined
           - ansible_password | length > 0
@@ -20,16 +20,19 @@
       ansible.builtin.user:
         name: ansible
         state: present
-    - name: Distribute public key of {{ ansible_user }} to service user
+
+    - name: Distribute public key of {{ ansible_user }} to service user  # noqa name[template]
       ansible.posix.authorized_key:
         user: ansible
-        key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', lookup('env', 'HOME') + '/.ssh/id_rsa.pub') }}"
         state: present
+
     - name: Add password-less sudo permissions for Ansible service user
-      copy:
+      ansible.builtin.copy:
         content: "ansible ALL=(ALL) NOPASSWD:ALL"
         dest: /etc/sudoers.d/automation
         validate: /usr/sbin/visudo -csf %s
+        mode: "0644"
 
 - name: Adjust inventory file on Ansible control node
   hosts: localhost
@@ -46,6 +49,8 @@
         option: ansible_user
         value: ansible
         no_extra_spaces: true
+        mode: "0644"
+
     - name: Add variable section for control group with ansible_connection
       community.general.ini_file:
         path: "/home/{{ lab_user }}/lab_inventory/hosts"
@@ -53,3 +58,4 @@
         option: ansible_connection
         value: local
         no_extra_spaces: true
+        mode: "0644"
