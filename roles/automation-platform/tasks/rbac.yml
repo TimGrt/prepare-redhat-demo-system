@@ -1,0 +1,57 @@
+---
+
+- name: Create user wweb
+  awx.awx.user:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    username: wweb
+    password: ansible
+    email: wweb@example.com
+    first_name: Werner
+    last_name: Web
+    organization: Default
+    update_secrets: false
+
+- name: Create team Web Content
+  awx.awx.team:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    name: Web Content
+    organization: Default
+
+- name: Add user wweb to team Web Content
+  awx.awx.role:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    users:
+      - wweb
+    target_team: Web Content
+    role: member
+
+- name: Grant read and execute permissions to user wweb for job template
+  awx.awx.role:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    users:
+      - wweb
+    job_templates:
+      - Create index.html
+    role: "{{ item }}"
+  loop:
+    - read
+    - execute
+
+- name: Run job template as user wweb, waiting for completion
+  awx.awx.job_launch:
+    controller_host: "{{ controller_host }}"
+    controller_username: wweb
+    controller_password: ansible
+    job_template: Create index.html
+    extra_vars:
+      first_line: "Ansible Automation is cool!"
+      second_line: "Executed from a playbook outside of AAP, running as user created in RBAC exercise."
+    wait: true

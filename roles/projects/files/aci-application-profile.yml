@@ -1,0 +1,13 @@
+---
+
+- name: Add a new AP
+  cisco.aci.aci_ap:
+    host: "{{ ansible_host }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    validate_certs: false
+    tenant: demo-tenant-tg
+    ap: workshop
+    description: Workshop AP
+    monitoring_policy: default
+    state: present

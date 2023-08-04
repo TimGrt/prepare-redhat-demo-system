@@ -1,0 +1,7 @@
+
+- name: Create tenant for my user
+  netbox.netbox.netbox_tenant:
+    data:
+      name: student1
+      tenant_group: cc_workshop
+    state: present
