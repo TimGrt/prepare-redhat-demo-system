@@ -1,0 +1,7 @@
+---
+
+# This playbook creates all files and folders which the attendees would create doing the exercises
+
+- ansible.builtin.import_playbook: create-ansible-basics-exercises.yml  # noqa name[missing]
+- ansible.builtin.import_playbook: create-automation-platform-exercises.yml  # noqa name[missing]
+- ansible.builtin.import_playbook: create-projects-exercises.yml  # noqa name[missing]

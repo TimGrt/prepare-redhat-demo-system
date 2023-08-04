@@ -1,0 +1,16 @@
+---
+
+- name: Prepare RHPDS workshop environment with all "Ansible Basics" exercises
+  hosts: localhost
+  pre_tasks:
+    - name: Install necessary collections
+      community.general.ansible_galaxy_install:
+        type: collection
+        name: community.general
+      loop:
+        - community.general
+        - cisco.aci
+        - aws.aws
+        - netbox.netbox
+  roles:
+    - projects
