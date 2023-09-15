@@ -1,6 +1,5 @@
 ---
 
-ansible_host: "sandboxapicdc.cisco.com"
 ansible_connection: local
 username: "admin"
 password: "{{ vault_password }}"
