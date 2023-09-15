@@ -6,6 +6,7 @@
     username: "{{ username }}"
     password: "{{ password }}"
     validate_certs: false
+    use_ssl: true
     tenant: "common"
     state: query
   register: common_contracts
