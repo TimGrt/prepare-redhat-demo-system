@@ -5,6 +5,7 @@
     host: "{{ ansible_host }}"
     username: "{{ username }}"
     password: "{{ password }}"
+    use_ssl: true
     validate_certs: false
     tenant: demo-tenant-tg
     ap: workshop
