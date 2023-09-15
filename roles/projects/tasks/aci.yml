@@ -12,7 +12,7 @@
     state: directory
     mode: "0755"
   loop:
-    - host_vars/sandbox-apic
+    - host_vars/sandboxapicdc.cisco.com
     - roles/apic/tasks
 
 - name: Copy inventory file for project exercise to designated directory structure
