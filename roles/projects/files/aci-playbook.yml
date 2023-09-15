@@ -8,6 +8,7 @@
         host: "{{ ansible_host }}"
         username: "{{ username }}"
         password: "{{ password }}"
+        use_ssl: true
         validate_certs: false
         state: query
       register: apic_system_info

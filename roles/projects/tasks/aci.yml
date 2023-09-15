@@ -28,9 +28,9 @@
     mode: "0644"
   loop:
     - file: sandbox-apic-vars.yml
-      dest: host_vars/sandbox-apic/connection.yml
+      dest: host_vars/sandboxapicdc.cisco.com/connection.yml
     - file: aci-vault.yml
-      dest: host_vars/sandbox-apic/vault.yml
+      dest: host_vars/sandboxapicdc.cisco.com/vault.yml
     - file: aci-playbook.yml
       dest: aci-automation.yml
     - file: aci-tasks.yml
