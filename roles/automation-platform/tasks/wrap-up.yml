@@ -13,7 +13,7 @@
     execution_environment: Default execution environment
     playbook: rhel/apache/webcontent.yml
     credentials:
-      - Workshop Credential
+      - Workshop Credentials
     limit: web
     extra_vars:
       dev_content: "default dev content"
@@ -66,4 +66,4 @@
     module_name: command
     module_args: curl -s http://{{ ansible_host }}
     execution_environment: Default execution environment
-    credential: Workshop Credential
+    credential: Workshop Credentials
