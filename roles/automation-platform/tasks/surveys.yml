@@ -13,7 +13,7 @@
     execution_environment: Default execution environment
     playbook: rhel/apache/apache_role_install.yml
     credentials:
-      - Workshop Credential
+      - Workshop Credentials
     limit: web
     become_enabled: true
     survey_spec:

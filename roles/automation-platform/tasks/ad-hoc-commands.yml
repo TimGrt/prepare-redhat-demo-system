@@ -9,7 +9,7 @@
     limit: "node1,node2,node3"
     module_name: ping
     execution_environment: Default execution environment
-    credential: Workshop Credential
+    credential: Workshop Credentials
 
 - name: Run ad-hoc command to gather id
   awx.awx.ad_hoc_command:
@@ -21,7 +21,7 @@
     module_name: command
     module_args: id
     execution_environment: Default execution environment
-    credential: Workshop Credential
+    credential: Workshop Credentials
 
 - name: Run ad-hoc command to print /etc/shadow
   awx.awx.ad_hoc_command:
@@ -33,7 +33,7 @@
     module_name: command
     module_args: cat /etc/shadow
     execution_environment: Default execution environment
-    credential: Workshop Credential
+    credential: Workshop Credentials
     become_enabled: true
 
 - name: Run ad-hoc command to install tmux, this is the challenge lab
@@ -46,5 +46,5 @@
     module_name: yum
     module_args: name=tmux
     execution_environment: Default execution environment
-    credential: Workshop Credential
+    credential: Workshop Credentials
     become_enabled: true

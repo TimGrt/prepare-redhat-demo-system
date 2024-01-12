@@ -45,7 +45,7 @@
     execution_environment: Default execution environment
     playbook: rhel/webops/web_infrastructure.yml
     credentials:
-      - Workshop Credential
+      - Workshop Credentials
     limit: web
     become_enabled: true
 
@@ -62,7 +62,7 @@
     execution_environment: Default execution environment
     playbook: rhel/webdev/install_node_app.yml
     credentials:
-      - Workshop Credential
+      - Workshop Credentials
     limit: web
     become_enabled: true
 
