@@ -16,6 +16,7 @@
     - roles/grafana/tasks
     - roles/grafana/handlers
     - roles/grafana/files
+    - roles/grafana/defaults
 
 - name: Copy inventory file for project exercise to designated directory structure
   ansible.builtin.template:
@@ -39,5 +40,9 @@
       dest: roles/grafana/tasks/installation.yml
     - file: grafana-configuration.yml
       dest: roles/grafana/tasks/configuration.yml
+    - file: grafana-defaults.yml
+      dest: roles/grafana/defaults/main.yml
+    - file: grafana.repo
+      dest: roles/grafana/files/grafana.repo
   loop_control:
     label: "{{ item.dest }}"
