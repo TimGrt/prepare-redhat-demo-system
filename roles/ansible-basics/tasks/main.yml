@@ -58,6 +58,8 @@
       dest: group_vars
     - file: node2.yml
       dest: host_vars
+  loop_control:
+    label: "{{ item.file }}"
 
 - name: Copy files referenced in playbooks to global files folder
   ansible.builtin.copy:
@@ -91,6 +93,8 @@
       dest: templates/vhost.conf.j2
     - file: role-web.html
       dest: files/web.html
+  loop_control:
+    label: "{{ item.file }}"
 
 # New inventory group needed for Exercise 1.5
 - name: Add additional group with existing host to lab inventory
