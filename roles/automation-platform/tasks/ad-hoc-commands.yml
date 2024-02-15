@@ -1,5 +1,23 @@
 ---
 
+- name: Ensure all hosts from Workshop inventory are enabled
+  awx.awx.host:
+    controller_host: "{{ controller_host }}"
+    controller_username: admin
+    controller_password: "{{ controller_password }}"
+    name: "{{ item }}"
+    inventory: Workshop Inventory
+    enabled: true
+    state: present
+  loop:
+    - ansible-1
+    - node1
+    - node2
+    - node3
+  tags: test
+
+
+
 - name: Run ad-hoc ping command
   awx.awx.ad_hoc_command:
     controller_host: "{{ controller_host }}"
