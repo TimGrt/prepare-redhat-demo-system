@@ -4,7 +4,7 @@
   hosts: localhost
   vars:
     # Input controller host and password here or via extra_vars."
-    controller_host: https://ansible-1.9pbg8.sandbox1407.opentlc.com 
-    controller_password: "NjYyNzUz"
+    controller_host: https://ansible-1.fd9pf.sandbox2472.opentlc.com
+    controller_password: "NDc1NzU1"
   roles:
     - automation-platform
