@@ -16,8 +16,6 @@
     - node3
   tags: test
 
-
-
 - name: Run ad-hoc ping command
   awx.awx.ad_hoc_command:
     controller_host: "{{ controller_host }}"
