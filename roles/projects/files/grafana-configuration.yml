@@ -2,18 +2,18 @@
 
 - name: Change theme to {{ grafana_theme }}
   community.general.ini_file:
-    path: etc grafana /grafana.ini
+    path: /etc/grafana/grafana.ini
     section: users
     option: default_theme
     value: "{{ grafana_theme }}"
   become: true
-  notify: restart grafana
+  notify: Restart grafana
 
 - name: Change port to {{ grafana_port }}
   community.general.ini_file:
-    path: etc grafana /grafana.ini
+    path: /etc/grafana/grafana.ini
     section: server
     option: http_port
     value: "{{ grafana_port }}"
   become: true
-  notify: restart grafana
+  notify: Restart grafana
