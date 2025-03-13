@@ -4,3 +4,4 @@ collections:
   - ansible.posix
   - awx.awx
   - community.general
+  - netbox.netbox
