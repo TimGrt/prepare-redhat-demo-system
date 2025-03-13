@@ -25,6 +25,12 @@ ansible-playbook create-automation-platform-exercises.yml
 ansible-playbook create-projects-exercises.yml
 ```
 
+Run playbook with `--list-tags` to show available tags.
+
+```console
+ansible-playbook create-projects-exercises.yml -t network
+```
+
 ```console
 ansible-playbook create-all-exercises.yml
 ```
