@@ -102,5 +102,5 @@
     path: "{{ ansible_user_dir }}/lab_inventory/hosts"
     block: |
         [ftpserver]
-        node2
+        node2 ansible_host=node2.example.com
   become: true
