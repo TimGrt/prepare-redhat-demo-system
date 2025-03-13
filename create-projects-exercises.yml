@@ -1,16 +1,21 @@
 ---
 
-- name: Prepare RHPDS workshop environment with all "Ansible Basics" exercises
+- name: Prepare RHPDS workshop environment with all "Ansible Projects" exercises
   hosts: localhost
   pre_tasks:
-    - name: Install necessary collections
-      community.general.ansible_galaxy_install:
-        type: collection
-        name: community.general
-      loop:
-        - community.general
-        - cisco.aci
-        - aws.aws
-        - netbox.netbox
+    - name: Get installed collections
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection list --format=yaml
+      register: installed_collections
+      changed_when: false
+      failed_when: false
+
+    - name: Install collections from requirements.yml # noqa no-changed-when
+      ansible.builtin.command:
+        cmd: ansible-galaxy collection install -r requirements.yml
+      when: requirements_collections_list | difference(installed_collections_list) | length != 0
+      vars:
+        requirements_collections_list: "{{ (lookup('file', 'requirements.yml') | from_yaml)['collections'] }}"
+        installed_collections_list: "{{ (installed_collections.stdout | from_yaml | dict2items)[0]['value'] | dict2items | map(attribute='key') | list }}"
   roles:
     - projects

@@ -11,11 +11,22 @@
     state: query
   register: common_contracts
 
+- name: Ensure Python package manager is available
+  ansible.builtin.package:
+    name: python{{ controller_python_version }}-pip
+    state: present
+  become: true
+  vars:
+    controller_python_version: "{{ ansible_playbook_python | regex_replace('/usr/bin/python') }}"
+
 - name: Install dependency for json_query filter
   ansible.builtin.pip:
     name: jmespath
-    executable: pip3.9
+    executable: pip{{ controller_python_version }}
+  vars:
+    controller_python_version: "{{ ansible_playbook_python | regex_replace('/usr/bin/python') }}"
 
+# Requires jmespath python packages, install with 'python3.12 -m pip install jmespath', done by task above
 - name: Output list of common contracts
   ansible.builtin.debug:
     msg: "{{ common_contracts | json_query('current[0].fvTenant.children[*].vzBrCP.attributes.name') }}"

@@ -1,4 +1,4 @@
-
+---
 - name: Create tenant for my user
   netbox.netbox.netbox_tenant:
     data:
