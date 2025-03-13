@@ -1,0 +1,26 @@
+---
+
+profile: production
+quiet: true
+
+# Disabling strict mode as certain task files are excluded
+# This silences the warning of files not found from 'ansible-lint-ignore.txt'
+strict: false
+exclude_paths:
+  - .cache/
+  - .github/
+  - mkdocs.yml
+  - example-site-playbook.yml # Contains references to non-existent playbooks
+  - example-k8s-installation-playbook.yml # Contains references to non-existent playbooks
+
+skip_list:
+  - role-name
+
+enable_list:
+  - args
+  - empty-string-compare
+  - no-log-password
+  - no-same-owner
+
+# Offline mode disables installation of requirements.yml and schema refreshing
+offline: true
