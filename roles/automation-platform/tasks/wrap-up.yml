@@ -43,7 +43,7 @@
     inventory: Workshop Inventory
     name: node2
     variables:
-      ansible_host: "{{ lookup('ini', 'node2 re=yes section=web file=' + ansible_user_dir + '/lab_inventory/hosts') }}"
+      ansible_host: node2.example.com
       stage: prod
     enabled: true
     state: present
