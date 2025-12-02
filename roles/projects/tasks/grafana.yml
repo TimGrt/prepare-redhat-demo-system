@@ -2,13 +2,13 @@
 
 - name: Create project folder according to Lab guide
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/grafana-deployment"
+    path: "{{ ansible_user_dir }}/grafana_deployment"
     state: directory
     mode: "0755"
 
 - name: Create directory structure according to Lab guide
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/grafana-deployment/{{ item }}"
+    path: "{{ ansible_user_dir }}/grafana_deployment/{{ item }}"
     state: directory
     mode: "0755"
   loop:
@@ -20,27 +20,27 @@
 
 - name: Copy inventory file for project exercise to designated directory structure
   ansible.builtin.template:
-    src: grafana-inventory.ini.j2
-    dest: "{{ ansible_user_dir }}/grafana-deployment/inventory.ini"
+    src: grafana_inventory.ini.j2
+    dest: "{{ ansible_user_dir }}/grafana_deployment/inventory.ini"
     mode: "0644"
 
 - name: Copy all other files for project exercise to designated directory structure
   ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir }}/grafana-deployment/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/grafana_deployment/{{ item.dest }}"
     mode: "0644"
   loop:
-    - file: grafana-playbook.yml
+    - file: grafana_playbook.yml
       dest: main.yml
-    - file: grafana-handler.yml
+    - file: grafana_handler.yml
       dest: roles/grafana/handlers/main.yml
-    - file: grafana-tasks.yml
+    - file: grafana_tasks.yml
       dest: roles/grafana/tasks/main.yml
-    - file: grafana-installation.yml
+    - file: grafana_installation.yml
       dest: roles/grafana/tasks/installation.yml
-    - file: grafana-configuration.yml
+    - file: grafana_configuration.yml
       dest: roles/grafana/tasks/configuration.yml
-    - file: grafana-defaults.yml
+    - file: grafana_defaults.yml
       dest: roles/grafana/defaults/main.yml
     - file: grafana.repo
       dest: roles/grafana/files/grafana.repo

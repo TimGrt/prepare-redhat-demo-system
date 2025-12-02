@@ -2,33 +2,33 @@
 
 - name: Create project folder according to Lab guide for Netbox project
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/netbox-automation"
+    path: "{{ ansible_user_dir }}/netbox_automation"
     state: directory
     mode: "0755"
 
 - name: Create directory structure according to Lab guide for Netbox project
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/netbox-automation/{{ item }}"
+    path: "{{ ansible_user_dir }}/netbox_automation/{{ item }}"
     state: directory
     mode: "0755"
   loop:
     - host_vars/netbox-sandbox
-    - roles/netbox-automation/tasks
+    - roles/netbox_automation/tasks
 
 - name: Copy inventory file for project exercise to designated directory structure
   ansible.builtin.copy:
-    src: aci-inventory.ini
-    dest: "{{ ansible_user_dir }}/netbox-automation/inventory.ini"
+    src: aci_inventory.ini
+    dest: "{{ ansible_user_dir }}/netbox_automation/inventory.ini"
     mode: "0644"
 
 - name: Copy all other files for project exercise to designated directory structure
   ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir }}/netbox-automation/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/netbox_automation/{{ item.dest }}"
     mode: "0644"
   loop:
-    - file: netbox-tenant.yml
-      dest: roles/netbox-automation/tasks.yml
+    - file: netbox_tenant.yml
+      dest: roles/netbox_automation/tasks.yml
   loop_control:
     label: "{{ item.dest }}"
 
