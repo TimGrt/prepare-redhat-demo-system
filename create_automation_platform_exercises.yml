@@ -7,9 +7,9 @@
   vars:
     # Input controller host and password here or via extra_vars."
     # Provide AAP hostname without https:// prefix
-    aap_hostname: controller.lsqpn.sandbox1899.opentlc.com
+    aap_hostname: ""
     aap_username: "admin"
-    aap_password: "R3dh4t1!"
+    aap_password: ""
   tasks:
     - name: Check for dependencies
       ansible.builtin.import_role:
