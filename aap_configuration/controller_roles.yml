@@ -1,0 +1,13 @@
+---
+controller_roles:
+  - user: wweb
+    job_templates:
+      - Create index.html
+    role: admin
+  - user: wweb
+    job_templates:
+      - Create Web Content
+    role: execute
+  - user: wweb
+    inventory: Workshop Inventory
+    role: adhoc

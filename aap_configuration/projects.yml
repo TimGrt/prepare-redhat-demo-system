@@ -1,0 +1,42 @@
+---
+controller_projects:
+  - name: Workshop Project
+    organization: Default
+    scm_type: git
+    scm_url: https://github.com/ansible/workshop-examples.git
+    scm_clean: true
+    scm_update_on_launch: true
+    scm_delete_on_update: true
+    default_environment: Default execution environment
+
+  - name: Workshop Demo Content
+    organization: Default
+    scm_type: git
+    scm_url: https://github.com/TimGrt/workshop-demo.git
+    scm_branch: main
+    scm_clean: true
+    scm_update_on_launch: true
+    scm_delete_on_update: true
+    default_environment: Default execution environment
+
+  - name: Webops Git Repo
+    organization: Default
+    default_environment: Default execution environment
+    scm_type: git
+    scm_url: https://github.com/ansible/workshop-examples.git
+    scm_branch: webops
+    scm_update_on_launch: true
+    scm_delete_on_update: true
+    scm_clean: true
+    state: present
+
+  - name: Webdev Git Repo
+    organization: Default
+    default_environment: Default execution environment
+    scm_type: git
+    scm_url: https://github.com/ansible/workshop-examples.git
+    scm_branch: webdev
+    scm_update_on_launch: true
+    scm_delete_on_update: true
+    scm_clean: true
+    state: present

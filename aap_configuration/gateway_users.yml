@@ -1,0 +1,8 @@
+---
+aap_user_accounts:
+  - username: wweb
+    password: ansible
+    email: wweb@example.com
+    first_name: Werner
+    last_name: Web
+    organization: Default
