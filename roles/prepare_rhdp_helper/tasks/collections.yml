@@ -1,0 +1,8 @@
+---
+
+- name: Install collections from requirements.yml necessary to prepare RHPDS # noqa no-changed-when
+  ansible.builtin.command:
+    cmd: ansible-galaxy collection install -r requirements.yml
+    chdir: "{{ playbook_dir }}"
+  register: collection_install_result
+  changed_when: collection_install_result.stdout is not search(".*Nothing to do.*")

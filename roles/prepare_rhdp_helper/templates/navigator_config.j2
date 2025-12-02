@@ -1,0 +1,24 @@
+---
+ansible-navigator:
+  ansible:
+    # Specify an inventory file path or comma separated host list
+    inventory:
+      entries:
+        - {{ ansible_user_dir }}/lab_inventory/hosts
+  execution-environment:
+    container-engine: podman
+    enabled: true
+    image: {{ ee_image }}
+    pull:
+      policy: missing
+  # Set user interface mode, either 'stdout' or 'interactive'
+  # Mode 'stdout' ensures same output method as with ansible-playbook command
+  logging:
+    level: warning
+    file: ~/ansible_files/logs/ansible-navigator.log
+  mode: stdout
+  # Sets configuration for  the creation of artifacts for completed playbooks.
+  # Can be enabled or disabled and specify filename and location
+  playbook-artifact:
+    enable: true
+    save-as: ~/ansible_files/logs/{playbook_name}-artifact-{time_stamp}.json

@@ -1,0 +1,7 @@
+---
+- name: Prepare execution for RHDP automation
+  hosts: localhost
+  connection: local
+  become: false
+  roles:
+    - prepare_rhdp_helper
