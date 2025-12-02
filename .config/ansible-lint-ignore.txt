@@ -1,4 +1,4 @@
 netbox.yml args[module]
-roles/ansible-basics/files/test_apache_role.yml syntax-check[specific]
-roles/projects/files/aci-playbook.yml syntax-check[specific]
-roles/projects/files/grafana-playbook.yml syntax-check[specific]
+roles/ansible_basics/files/test_apache_role.yml syntax-check[specific]
+roles/projects/files/aci_playbook.yml syntax-check[specific]
+roles/projects/files/grafana_playbook.yml syntax-check[specific]
