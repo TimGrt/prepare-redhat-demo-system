@@ -1,51 +1,61 @@
-# Prepare RedHat Demo System
+# Prepare RedHat Demo Platform
 
-This playbook prepares the RedHat Demo Lab Environment for the _Ansible Linux Automation Workshop_.
-It creates the desired directory structure and deploys all files and playbooks, which are done in the Lab exercises.
+The playbooks in this repository prepare the RedHat Demo Lab Environment for the **Ansible Linux Automation Workshop**.  
+They create the desired directory structure and deploys all files and playbooks, which are done in the Lab exercises.
 
-## Usage
+> The content is intended to run *inside* the Workshop environment!
 
-Clone the repository into the home folder:
+## 🔌 Requirements & Usage
 
-```console
-git clone https://github.com/TimGrt/prepare-redhat-demo-system
-```
+1. Start the **Visual Studio Code** instance and open a **Terminal**. Ensure that you are in the *home directory*.
 
-Deploy all files and folder, which are created during the workshop, either for every workshop topic or all at once.
+2. Clone the repository into the home folder:
 
-```console
-ansible-playbook create-ansible-basics-exercises.yml
-```
+    ```console
+    git clone https://github.com/TimGrt/prepare-redhat-demo-system
+    ```
 
-```console
-ansible-playbook create-automation-platform-exercises.yml
-```
+3. Run the playbook `prepare_execution.yml` to install all necessary dependencies:
 
-```console
-ansible-playbook create-projects-exercises.yml
-```
+    ```console
+    ansible-playbook prepare_execution.yml
+    ```
 
-Run playbook with `--list-tags` to show available tags.
+### 🌱 Ansible Basics Exercises
+
+The following playbook creates all files and folder from the [Ansible Basics exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-basics-overview/):
 
 ```console
-ansible-playbook create-projects-exercises.yml -t network
+ansible-playbook create_ansible_basics_exercises.yml
 ```
+
+### 🌳 Automation Platform exercises
+
+The following playbook creates all files and folder from the [Automation platform exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/automation-platform-overview/):
 
 ```console
-ansible-playbook create-all-exercises.yml
+ansible-playbook create_automation_platform_exercises.yml
 ```
 
-The exercises for Automation Platform are executed, all other playbooks are not run, only the files are deployed.
+### 🌿 Projects exercises
 
-## SSH connection
+The following playbook creates **all** files and folder from the [Project exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/projects/projects-overview/):
+
+```console
+ansible-playbook create_projects_exercises.yml
+```
+
+Run playbook with `--list-tags` to show available tags. You can deploy only specific projects content if desired, for example:
+
+```console
+ansible-playbook create_projects_exercises.yml -t network
+```
+
+> The exercises for Automation Platform are executed, all other playbooks are not run, only the files are deployed.
+
+## 💊 Fix SSH connection from bonus exerxise
 
 The *bonus* exercises [Ansible Basics - Bonus Lab 1 - Prepare Infrastructure](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-core/ansible-core-supplemental/#bonus-lab-1-prepare-infrastructure) is intended to break the initially working SSH connection to all managed nodes (you will end up as the *ec2-user* on all nodes, configured by `~/.ssh/config`). This is no "Real World" setup and is adjusted during the exercise.
-
-Install required collections (`fix-ssh.yml` playbook uses module of *posix* collection):
-
-```console
-[student1@ansible-1]$ ansible-galaxy collection install -r requirements.yml
-```
 
 To break the initially working SSH connection (this is done as part of the exercise), download the script and execute it:
 
@@ -58,35 +68,4 @@ To "fix" the SSH connection, use the following playbook. It creates a service us
 
 ```console
 [student1@ansible-1]$ ansible-playbook fix-ssh.yml --ask-pass
-```
-
-## Ansible Navigator
-
-Use the following `.ansible-navigator.yml` instead of the provided one, this uses some useful configurations. Ensure that the used execution environment is still valid.
-
-```yaml
----
-ansible-navigator:
-  ansible:
-# Specify an inventory file path or comma separated host list
-    inventories:
-    - /home/student1/lab_inventory/hosts
-# Sets configuration for  the creation of artifacts for completed playbooks.
-# Can be enabled or disabled and specify filename and location
-  playbook-artifact:
-    enable: true
-    save-as: ~/ansible-files/artifacts/{playbook_name}-artifact-{ts_utc}.json
-# Set user interface mode, either 'stdout' or 'interactive'
-# Mode 'stdout' ensures same output method as with ansible-playbook command
-  mode: stdout
-
-# Enable or disable the use of an execution environment and specify different options
-  execution-environment:
-    image: registry.redhat.io/ansible-automation-platform-20-early-access/ee-supported-rhel8:2.0.0
-    enabled: true
-    container-engine: podman
-    pull-policy: missing
-    volume-mounts:
-    - src: "/etc/ansible/"
-      dest: "/etc/ansible/"
 ```
