@@ -1,0 +1,10 @@
+controller_workflows:
+  - name: Deploy Webapp Server
+    organization: Default
+    simplified_workflow_nodes:
+      - identifier: Web App Deploy
+        unified_job_template: Web App Deploy
+        success_nodes:
+          - Node.js Deploy
+      - identifier: Node.js Deploy
+        unified_job_template: Node.js Deploy
