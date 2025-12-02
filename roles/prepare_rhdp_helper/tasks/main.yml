@@ -1,0 +1,9 @@
+---
+
+- ansible.builtin.import_tasks: execution_assertion.yml # noqa name[missing]
+
+- when: execution_binary == 'ansible-playbook'
+  block: # noqa name[missing]
+    - ansible.builtin.import_tasks: navigator.yml # noqa name[missing]
+
+    - ansible.builtin.import_tasks: collections.yml # noqa name[missing]

@@ -1,0 +1,3 @@
+---
+recommended_execution_binary: ansible-playbook
+execution_binary: "{{ (lookup('env', 'ANSIBLE_STDOUT_CALLBACK') == 'awx_display') | ternary('ansible-navigator', 'ansible-playbook') }}"
