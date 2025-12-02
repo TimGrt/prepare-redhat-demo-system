@@ -1,0 +1,52 @@
+---
+# Run this playbook with ansible-navigator as the (supported) EE contains necessary certified collections e.g. ansible.platform or ansible.controller
+# It uses the infra.aap_configuration role to configure the Automation Platform, this collection is installed locally via prepare_rhdp_helper role
+- name: Prepare RHDP workshop environment with all "Automation Platform" exercises
+  hosts: localhost
+  connection: local
+  vars:
+    # Input controller host and password here or via extra_vars."
+    # Provide AAP hostname without https:// prefix
+    aap_hostname: ""
+    aap_username: "admin"
+    aap_password: ""
+  tasks:
+    - name: Check for dependencies
+      ansible.builtin.import_role:
+        name: prepare_rhdp_helper
+        tasks_from: execution_assertion
+      vars:
+        recommended_execution_binary: ansible-navigator
+
+    - name: Ensure connection variables are set and valid
+      ansible.builtin.assert:
+        that:
+          - aap_hostname is defined
+          - aap_hostname | length > 0
+          - aap_username is defined
+          - aap_username | length > 0
+          - aap_password is defined
+          - aap_password | length > 0
+        quiet: true
+        fail_msg: "Necessary connections variables are undefined or invalid! Provide them in the vars block or via extra_vars."
+
+    - name: Load all configuration files
+      ansible.builtin.include_vars:
+        dir: aap_configuration
+        extensions:
+          - yml
+      tags:
+        - always
+
+    - name: Create a new token using platform username/password
+      ansible.platform.token:
+        description: "Creating token to configure AAP"
+        scope: "write"
+        state: present
+        aap_hostname: "{{ aap_hostname }}"
+        aap_username: "{{ aap_username }}"
+        aap_password: "{{ aap_password }}"
+
+    - name: Configure AAP using dispatch role
+      ansible.builtin.import_role:
+        name: infra.aap_configuration.dispatch

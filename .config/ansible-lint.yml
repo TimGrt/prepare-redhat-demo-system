@@ -1,26 +1,27 @@
 ---
-
 profile: production
+
+# Silence infos, warnings and don't show summary
 quiet: true
 
-# Disabling strict mode as certain task files are excluded
-# This silences the warning of files not found from 'ansible-lint-ignore.txt'
-strict: false
 exclude_paths:
-  - .cache/
-  - .github/
-  - mkdocs.yml
-  - example-site-playbook.yml # Contains references to non-existent playbooks
-  - example-k8s-installation-playbook.yml # Contains references to non-existent playbooks
+  - collections/
+  - create_automation_platform_exercises.yml
+
+mock_modules:
+  - token
+  - ansible.platform.token
+
+mock_roles:
+  - infra.aap_configuration.dispatch
 
 skip_list:
-  - role-name
+  - var-naming[no-role-prefix]
+  - yaml[line-length]
 
+# Enable some useful rules which are opt-in
 enable_list:
   - args
   - empty-string-compare
   - no-log-password
   - no-same-owner
-
-# Offline mode disables installation of requirements.yml and schema refreshing
-offline: true

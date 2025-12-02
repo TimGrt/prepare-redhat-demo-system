@@ -1,0 +1,14 @@
+---
+
+- name: Ensure playbook runs with correct execution binary
+  ansible.builtin.fail:
+    msg: "This playbook should be run with {{ recommended_execution_binary }}!"
+  when:
+    - recommended_execution_binary != execution_binary
+  vars:
+    execution_binary: "{{ (lookup('env', 'ANSIBLE_STDOUT_CALLBACK') == 'awx_display') | ternary('ansible-navigator', 'ansible-playbook') }}"
+
+- name: Check mode info
+  ansible.builtin.debug:
+    msg: "Helper role uses command module at different places, not all changes are shown."
+  when: ansible_check_mode

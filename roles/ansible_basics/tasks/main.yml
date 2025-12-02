@@ -1,14 +1,18 @@
 ---
 
+- ansible.builtin.import_role: # noqa name[missing]
+    name: prepare_rhdp_helper
+    tasks_from: execution_assertion
+
 - name: Create project folder according to Lab guide
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ansible-files"
+    path: "{{ ansible_user_dir }}/ansible_files"
     state: directory
     mode: "0755"
 
 - name: Create directory structure according to Lab guide
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ansible-files/{{ item }}"
+    path: "{{ ansible_user_dir }}/ansible_files/{{ item }}"
     state: directory
     mode: "0755"
   loop:
@@ -20,7 +24,7 @@
 
 - name: Create directory structure for role exercise according to Lab guide
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/ansible-files/roles/apache-webserver/{{ item }}"
+    path: "{{ ansible_user_dir }}/ansible_files/roles/apache-webserver/{{ item }}"
     state: directory
     mode: "0755"
   loop:
@@ -32,7 +36,7 @@
 - name: Copy playbooks to destination
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir }}/ansible-files/"
+    dest: "{{ ansible_user_dir }}/ansible_files/"
     mode: "0644"
   loop:
     - apache.yml
@@ -41,7 +45,7 @@
     - facts.yml
     - ftpserver.yml
     - loop_users.yml
-    - motd-facts.yml
+    - motd_facts.yml
     - service_state.yml
     - setup.yml
     - setup_filter.yml
@@ -51,7 +55,7 @@
 - name: Copy variable files
   ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir }}/ansible-files/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/ansible_files/{{ item.dest }}"
     mode: "0644"
   loop:
     - file: web.yml
@@ -64,7 +68,7 @@
 - name: Copy files referenced in playbooks to global files folder
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir }}/ansible-files/files"
+    dest: "{{ ansible_user_dir }}/ansible_files/files"
     mode: "0644"
   loop:
     - web.html
@@ -74,24 +78,24 @@
 - name: Copy templates referenced in playbooks to global templates folder
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "{{ ansible_user_dir }}/ansible-files/templates"
+    dest: "{{ ansible_user_dir }}/ansible_files/templates"
     mode: "0644"
   loop:
-    - motd-facts.j2
+    - motd_facts.j2
 
 - name: Copy all files for role exercise to designated directory structure
   ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir }}/ansible-files/roles/apache-webserver/{{ item.dest }}"
+    dest: "{{ ansible_user_dir }}/ansible_files/roles/apache-webserver/{{ item.dest }}"
     mode: "0644"
   loop:
-    - file: tasks-main.yml
+    - file: tasks_main.yml
       dest: tasks/main.yml
-    - file: handlers-main.yml
+    - file: handlers_main.yml
       dest: handlers/main.yml
     - file: vhost.conf.j2
       dest: templates/vhost.conf.j2
-    - file: role-web.html
+    - file: role_web.html
       dest: files/web.html
   loop_control:
     label: "{{ item.file }}"

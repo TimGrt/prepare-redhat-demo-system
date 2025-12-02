@@ -2,6 +2,7 @@
 
 collections:
   - ansible.posix
-  - awx.awx
+  - cisco.aci
   - community.general
+  - infra.aap_configuration
   - netbox.netbox
