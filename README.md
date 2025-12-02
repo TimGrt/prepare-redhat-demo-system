@@ -21,6 +21,8 @@ They create the desired directory structure and deploys all files and playbooks,
     ansible-playbook prepare_execution.yml
     ```
 
+> All content will only be deployed *as is*, but not executed. The AAP content (e.g. Projects, Job-Templates, ...) will be configured, but not executed as well.
+
 ### 🌱 Ansible Basics Exercises
 
 The following playbook creates all files and folder from the [Ansible Basics exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-basics-overview/):
@@ -50,8 +52,6 @@ Run playbook with `--list-tags` to show available tags. You can deploy only spec
 ```console
 ansible-playbook create_projects_exercises.yml -t network
 ```
-
-> The exercises for Automation Platform are executed, all other playbooks are not run, only the files are deployed.
 
 ## 💊 Fix SSH connection from bonus exerxise
 
