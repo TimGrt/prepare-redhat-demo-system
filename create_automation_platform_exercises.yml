@@ -2,8 +2,7 @@
 # Run this playbook with ansible-navigator as the (supported) EE contains necessary certified collections e.g. ansible.platform or ansible.controller
 # It uses the infra.aap_configuration role to configure the Automation Platform, this collection is installed locally via prepare_rhdp_helper role
 - name: Prepare RHDP workshop environment with all "Automation Platform" exercises
-  hosts: localhost
-  connection: local
+  hosts: controller
   vars:
     # Input controller host and password here or via extra_vars."
     # Provide AAP hostname without https:// prefix

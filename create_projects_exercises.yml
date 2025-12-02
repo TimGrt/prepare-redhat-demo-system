@@ -1,7 +1,6 @@
 ---
 
 - name: Prepare RHDP workshop environment with all "Ansible Projects" exercises
-  hosts: localhost
-  connection: local
+  hosts: controller
   roles:
     - projects

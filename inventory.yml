@@ -1,0 +1,7 @@
+---
+# Although everything runs locally, the Lab environment uses the inventory from /etc/ansible/hosts, which defines ansible_user etc., we don't want this
+controller:
+  hosts:
+    ansible-1:
+      ansible_host: localhost
+      ansible_connection: local

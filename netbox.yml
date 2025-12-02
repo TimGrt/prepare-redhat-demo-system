@@ -1,7 +1,7 @@
 ---
 
 - name: "Test NetBox modules"
-  hosts: localhost
+  hosts: controller
   gather_facts: false
   vars:
     workshop_slug: rh6f44
