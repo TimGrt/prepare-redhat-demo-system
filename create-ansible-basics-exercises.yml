@@ -1,8 +1,0 @@
----
-
-- name: Prepare RHPDS workshop environment with all "Ansible Basics" exercises
-  hosts: localhost
-  connection: local
-  become: false
-  roles:
-    - ansible-basics

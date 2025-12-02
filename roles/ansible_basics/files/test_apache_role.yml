@@ -1,5 +1,5 @@
 ---
-- name: Use apache-webserver role
+- name: Use apache_webserver role
   hosts: node2
   become: true
   pre_tasks:
@@ -9,7 +9,7 @@
         msg: "Beginning web server configuration."
 
   roles:
-    - apache-webserver
+    - apache_webserver
 
   post_tasks:
     - name: Output info before all roles are executed
