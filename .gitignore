@@ -1,2 +1,9 @@
+# Personal VSCode settings
 .vscode/
+# Ansible Cache folder
 .ansible/
+# Local collections installed by playbook
+.collections/
+# Log files
+logs/
+*.log
