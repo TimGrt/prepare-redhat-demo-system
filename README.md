@@ -15,6 +15,12 @@ They create the desired directory structure and deploys all files and playbooks,
     git clone https://github.com/TimGrt/prepare-redhat-demo-system
     ```
 
+    Change into the folder:
+
+    ```console
+    cd prepare-redhat-demo-system
+    ```
+
 3. Run the playbook `prepare_execution.yml` to install all necessary dependencies:
 
     ```console
@@ -35,8 +41,12 @@ ansible-playbook create_ansible_basics_exercises.yml
 
 The following playbook creates all files and folder from the [Automation platform exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/automation-platform-overview/):
 
+> Ensure that the required collection *infra.aap_configuration* is installed locally!  
+> Execute the playbook with `ansible-navigator` as it contains the necessary *ansible.platform* and *ansible.controller* collections!  
+> Provide the `inventory.yml` file!  
+
 ```console
-ansible-playbook create_automation_platform_exercises.yml
+ansible-navigator run create_automation_platform_exercises.yml - i inventory.yml
 ```
 
 ### 🌿 Projects exercises
