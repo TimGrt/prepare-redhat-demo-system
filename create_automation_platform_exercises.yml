@@ -10,13 +10,6 @@
     aap_username: "admin"
     aap_password: ""
   tasks:
-    - name: Check for dependencies
-      ansible.builtin.import_role:
-        name: prepare_rhdp_helper
-        tasks_from: execution_assertion
-      vars:
-        recommended_execution_binary: ansible-navigator
-
     - name: Ensure connection variables are set and valid
       ansible.builtin.assert:
         that:
