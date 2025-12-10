@@ -3,7 +3,7 @@
 # Ansible Cache folder
 .ansible/
 # Local collections installed by playbook
-.collections/
+collections/
 # Log files
 logs/
 *.log
