@@ -3,6 +3,7 @@
 The playbooks in this repository prepare the RedHat Demo Lab Environment for the **Ansible Linux Automation Workshop**.  
 They create the desired directory structure and deploys all files and playbooks, which are done in the Lab exercises.
 
+> [!TIP]
 > The content is intended to run *inside* the Workshop environment!
 
 ## 🔌 Requirements & Usage
@@ -27,8 +28,6 @@ They create the desired directory structure and deploys all files and playbooks,
     ansible-playbook prepare_execution.yml
     ```
 
-> All content will only be deployed *as is*, but not executed. The AAP content (e.g. Projects, Job-Templates, ...) will be configured, but not executed as well.
-
 ### 🌱 Ansible Basics Exercises
 
 The following playbook creates all files and folder from the [Ansible Basics exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-basics-overview/):
@@ -36,6 +35,8 @@ The following playbook creates all files and folder from the [Ansible Basics exe
 ```console
 ansible-playbook create_ansible_basics_exercises.yml
 ```
+> [!NOTE]
+> All content will only be deployed *as is*, but **not executed**.
 
 ### 🌳 Automation Platform exercises
 
@@ -48,6 +49,9 @@ The following playbook creates all files and folder from the [Automation platfor
 ```console
 ansible-navigator run create_automation_platform_exercises.yml - i inventory.yml
 ```
+
+> [!NOTE]
+> The AAP content (e.g. Projects, Job-Templates, ...) will be configured, but no Job- or Workflow-Templates are executed.
 
 ### 🌿 Projects exercises
 
@@ -62,6 +66,9 @@ Run playbook with `--list-tags` to show available tags. You can deploy only spec
 ```console
 ansible-playbook create_projects_exercises.yml -t network
 ```
+
+> [!NOTE]
+> All content will only be deployed *as is*, but **not executed**.
 
 ## 💊 Fix SSH connection from bonus exerxise
 
