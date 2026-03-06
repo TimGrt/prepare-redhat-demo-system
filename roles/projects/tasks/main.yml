@@ -17,3 +17,9 @@
     - projects
     - netbox
     - dcim
+
+- ansible.builtin.import_tasks: prometheus_node_exporter.yml  # noqa name[missing]
+  tags:
+    - projects
+    - node-exporter
+    - linux

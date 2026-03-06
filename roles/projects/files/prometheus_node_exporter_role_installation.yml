@@ -1,0 +1,27 @@
+---
+- name: Download Node exporter
+  ansible.builtin.unarchive:
+    src: "{{ node_exporter_archive_url }}"
+    dest: /tmp
+    remote_src: true
+
+- name: Create user for node exporter
+  ansible.builtin.user:
+    name: "{{ node_exporter_user }}"
+    create_home: false
+    shell: /sbin/nologin
+
+# The multiple filters extract the foldername without extensions from the archive URL.
+# The 'basename' filter extracts 'node_exporter-1.10.2.linux-amd64.tar.gz' from the URL.
+# The first 'splitext' creates a list of 'node_exporter-1.10.2.linux-amd64.tar' and 'gz', the 'first' filter extracts the first element of the list.
+# The second 'splitext' creates a list of 'node_exporter-1.10.2.linux-amd64' and 'tar', the 'first' filter extracts the first element of the list again.
+# This results in 'node_exporter-1.10.2.linux-amd64', which is the name of the extracted directory containing the node exporter binary.
+# Another approach could be to use the 'regex_replace' filter: "{{ node_exporter_archive_url | basename | regex_replace('\\.tar\\.gz$', '') }}"
+- name: Copy node exporter binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: "/tmp/{{ node_exporter_archive_url | basename | splitext | first | splitext | first }}/node_exporter"
+    remote_src: true
+    dest: /usr/local/bin/node_exporter
+    mode: "0755"
+    owner: "{{ node_exporter_user }}"
+    group: "{{ node_exporter_user }}"

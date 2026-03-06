@@ -35,6 +35,7 @@ The following playbook creates all files and folder from the [Ansible Basics exe
 ```console
 ansible-playbook create_ansible_basics_exercises.yml
 ```
+
 > [!NOTE]
 > All content will only be deployed *as is*, but **not executed**.
 

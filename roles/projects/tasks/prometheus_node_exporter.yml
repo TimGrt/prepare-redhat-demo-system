@@ -1,0 +1,42 @@
+---
+
+- name: Create project folder according to Lab guide
+  ansible.builtin.file:
+    path: "{{ ansible_facts.user_dir }}/prometheus_node_exporter"
+    state: directory
+    mode: "0755"
+
+- name: Create directory structure according to Lab guide
+  ansible.builtin.file:
+    path: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - roles
+    - roles/node_exporter/tasks
+    - roles/node_exporter/templates
+
+- name: Copy inventory file for project exercise to designated directory structure
+  ansible.builtin.copy:
+    src: prometheus_node_exporter_inventory.ini
+    dest: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/inventory.ini"
+    mode: "0644"
+
+- name: Copy all other files for project exercise to designated directory structure
+  ansible.builtin.copy:
+    src: "{{ item.file }}"
+    dest: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/{{ item.dest }}"
+    mode: "0644"
+  loop:
+    - file: prometheus_node_exporter_playbook.yml
+      dest: playbook.yml
+    - file: prometheus_node_exporter_role_main.yml
+      dest: roles/node_exporter/tasks/main.yml
+    - file: prometheus_node_exporter_role_installation.yml
+      dest: roles/node_exporter/tasks/installation.yml
+    - file: prometheus_node_exporter_role_service.yml
+      dest: roles/node_exporter/tasks/service.yml
+    - file: prometheus_node_exporter_role_template.service.j2
+      dest: roles/node_exporter/templates/node_exporter.service.j2
+  loop_control:
+    label: "{{ item.dest }}"
