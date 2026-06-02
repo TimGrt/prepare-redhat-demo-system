@@ -2,36 +2,47 @@
 
 - name: Create project folder according to Lab guide for Netbox project
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/netbox_automation"
+    path: "{{ ansible_facts['user_dir'] }}/netbox_automation"
     state: directory
     mode: "0755"
 
 - name: Create directory structure according to Lab guide for Netbox project
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/netbox_automation/{{ item }}"
+    path: "{{ ansible_facts['user_dir'] }}/netbox_automation/{{ item }}"
     state: directory
     mode: "0755"
   loop:
-    - host_vars/netbox-sandbox
     - roles/netbox_automation/tasks
 
 - name: Copy inventory file for project exercise to designated directory structure
   ansible.builtin.copy:
     src: aci_inventory.ini
-    dest: "{{ ansible_user_dir }}/netbox_automation/inventory.ini"
+    dest: "{{ ansible_facts['user_dir'] }}/netbox_automation/inventory.ini"
     mode: "0644"
 
 - name: Copy all other files for project exercise to designated directory structure
   ansible.builtin.copy:
     src: "{{ item.file }}"
-    dest: "{{ ansible_user_dir }}/netbox_automation/{{ item.dest }}"
+    dest: "{{ ansible_facts['user_dir'] }}/netbox_automation/{{ item.dest }}"
     mode: "0644"
   loop:
-    - file: netbox_tenant.yml
-      dest: roles/netbox_automation/tasks.yml
+    - file: netbox_inventory.ini
+      dest: roles/netbox_automation/inventory.ini
+    - file: netbox_dynamic_inventory.yml
+      dest: roles/netbox_automation/netbox-inventory.yml
+    - file: netbox_config.cfg
+      dest: roles/netbox_automation/ansible.cfg
+    - file: netbox_playbook.yml
+      dest: roles/netbox_automation/netbox-playbook.yml
+    - file: netbox_role_main.yml
+      dest: roles/netbox_automation/tasks/main.yml
+    - file: netbox_role_tenant.yml
+      dest: roles/netbox_automation/tasks/tenant.yml
+    - file: netbox_role_cluster.yml
+      dest: roles/netbox_automation/tasks/cluster.yml
   loop_control:
     label: "{{ item.dest }}"
 
 - name: Token necessary!
   ansible.builtin.debug:
-    msg: "Go to >> https://demo.netbox.dev/ << and create yourself an API token!"
+    msg: "Go to >> https://demo.netbox.dev/ << and create yourself an API token! Export API endpoint and token as environment variables NETBOX_API and NETBOX_TOKEN. Then you can run the playbook with: ansible-playbook netbox-playbook.yml"

@@ -1,0 +1,10 @@
+---
+- name: Create tenant (Step 3)
+  netbox.netbox.netbox_tenant:
+    netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+    netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+    data:
+      name: "{{ tenant_name }}"
+      description: Workshop Tenant
+      tenant_group: CC Workshop
+    state: present

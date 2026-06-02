@@ -1,0 +1,37 @@
+---
+- name: Automate Netbox
+  hosts: netbox
+  gather_facts: false
+  vars:
+    tenant_name: "Demo Tenant TG"
+  pre_tasks:
+    - name: Ensure environment variables are set
+      ansible.builtin.assert:
+        that:
+          - lookup('env', 'NETBOX_API') is url
+          - lookup('env', 'NETBOX_TOKEN') | length > 0
+        fail_msg: "Environment variables NETBOX_API and NETBOX_TOKEN must be set."
+        quiet: true
+    - name: Create Tenant group (done by Trainer!)
+      netbox.netbox.netbox_tenant_group:
+        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+        data:
+          name: CC Workshop
+    - name: Create Site for VMs (done by Trainer!)
+      netbox.netbox.netbox_site:
+        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+        data:
+          name: RH Demo Environment
+        state: present
+    - name: Create platform for RHEL8 (done by Trainer!)
+      netbox.netbox.netbox_platform:
+        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+        data:
+          name: Red Hat 8
+          slug: redhat_8
+        state: present
+  roles:
+    - netbox_automation
