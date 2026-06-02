@@ -1,0 +1,9 @@
+plugin: netbox.netbox.nb_inventory
+api_endpoint: https://demo.netbox.dev/
+# Filtering the query is not strictly necessary for the exercise, but it makes the output more concise and easier to read
+query_filters:
+  - site: rh-demo-environment
+# The following config creates groups based on the cluster name. This allows us to target all hosts from a specific tenant or OS in our playbooks.
+group_by:
+  - platforms
+  - tenants

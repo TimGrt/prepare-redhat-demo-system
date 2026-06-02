@@ -1,0 +1,36 @@
+---
+- name: Create VM cluster
+  netbox.netbox.netbox_cluster:
+    netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+    netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+    data:
+      name: "{{ tenant_name }} VMs"
+      tenant: "{{ tenant_name }}"
+      cluster_type: Amazon Web Services
+      cluster_group: EMEA
+
+# Provide the lab inventory!
+- name: Get facts for managed nodes (Step 5)
+  ansible.builtin.setup:
+  delegate_to: "{{ item }}"
+  delegate_facts: true
+  loop: "{{ groups['web'] }}"
+  vars:
+    ansible_python_interpreter: auto
+
+- name: Create VM objects
+  netbox.netbox.netbox_virtual_machine:
+    netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+    netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+    data:
+      name: "{{ hostvars[item]['ansible_nodename'] }}"
+      site: RH Demo Environment
+      cluster: "{{ tenant_name }} VMs"
+      tenant: "{{ tenant_name }}"
+      platform: "{{ hostvars[item]['ansible_distribution'] | lower }}_{{ hostvars[item]['ansible_distribution_major_version'] }}"
+      vcpus: "{{ hostvars[item]['ansible_processor_vcpus'] }}"
+      memory: "{{ hostvars[item]['ansible_memtotal_mb'] }}"
+      disk: "{{ hostvars[item]['ansible_memtotal_mb'] }}"
+      virtual_machine_role: Application Server
+      status: Active
+  loop: "{{ groups['web'] }}"
