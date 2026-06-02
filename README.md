@@ -30,7 +30,7 @@ They create the desired directory structure and deploys all files and playbooks,
 
 ### 🌱 Ansible Basics Exercises
 
-The following playbook creates all files and folder from the [Ansible Basics exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-basics-overview/):
+The following playbook creates all files and folder from the [Ansible Basics exercises](https://computacenter-com.github.io/ansible-workshop-exercises/ansible-basics-overview/):
 
 ```console
 ansible-playbook create_ansible_basics_exercises.yml
@@ -41,7 +41,7 @@ ansible-playbook create_ansible_basics_exercises.yml
 
 ### 🌳 Automation Platform exercises
 
-The following playbook creates all files and folder from the [Automation platform exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/automation-platform-overview/):
+The following playbook creates all files and folder from the [Automation platform exercises](https://computacenter-com.github.io/ansible-workshop-exercises/automation-platform-overview/):
 
 > Ensure that the required collection *infra.aap_configuration* is installed locally!  
 > Execute the playbook with `ansible-navigator` as it contains the necessary *ansible.platform* and *ansible.controller* collections!  
@@ -56,7 +56,7 @@ ansible-navigator run create_automation_platform_exercises.yml - i inventory.yml
 
 ### 🌿 Projects exercises
 
-The following playbook creates **all** files and folder from the [Project exercises](https://timgrt.github.io/Ansible-Workshop-Exercises/projects/projects-overview/):
+The following playbook creates **all** files and folder from the [Project exercises](https://computacenter-com.github.io/ansible-workshop-exercises/projects/projects-overview/):
 
 ```console
 ansible-playbook create_projects_exercises.yml
@@ -73,7 +73,7 @@ ansible-playbook create_projects_exercises.yml -t network
 
 ## 💊 Fix SSH connection from bonus exerxise
 
-The *bonus* exercises [Ansible Basics - Bonus Lab 1 - Prepare Infrastructure](https://timgrt.github.io/Ansible-Workshop-Exercises/ansible-core/ansible-core-supplemental/#bonus-lab-1-prepare-infrastructure) is intended to break the initially working SSH connection to all managed nodes (you will end up as the *ec2-user* on all nodes, configured by `~/.ssh/config`). This is no "Real World" setup and is adjusted during the exercise.
+The *bonus* exercises [Ansible Basics - Bonus Lab 1 - Prepare Infrastructure](https://computacenter-com.github.io/ansible-workshop-exercises/ansible-core/ansible-core-supplemental/#bonus-lab-1-prepare-infrastructure) is intended to break the initially working SSH connection to all managed nodes (you will end up as the *ec2-user* on all nodes, configured by `~/.ssh/config`). This is no "Real World" setup and is adjusted during the exercise.
 
 To break the initially working SSH connection (this is done as part of the exercise), download the script and execute it:
 
