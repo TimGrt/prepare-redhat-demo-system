@@ -15,6 +15,7 @@
     - roles
     - roles/node_exporter/tasks
     - roles/node_exporter/templates
+    - group_vars
 
 - name: Copy inventory file for project exercise to designated directory structure
   ansible.builtin.copy:
@@ -38,5 +39,7 @@
       dest: roles/node_exporter/tasks/service.yml
     - file: prometheus_node_exporter_role_template.service.j2
       dest: roles/node_exporter/templates/node_exporter.service.j2
+    - file: prometheus_node_exporter_group_vars.yml
+      dest: roles/node_exporter/group_vars/prometheus.yml
   loop_control:
     label: "{{ item.dest }}"

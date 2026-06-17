@@ -10,6 +10,7 @@
     name: "{{ node_exporter_user }}"
     create_home: false
     shell: /sbin/nologin
+  become: true
 
 # The multiple filters extract the foldername without extensions from the archive URL.
 # The 'basename' filter extracts 'node_exporter-1.10.2.linux-amd64.tar.gz' from the URL.
@@ -25,3 +26,4 @@
     mode: "0755"
     owner: "{{ node_exporter_user }}"
     group: "{{ node_exporter_user }}"
+  become: true
