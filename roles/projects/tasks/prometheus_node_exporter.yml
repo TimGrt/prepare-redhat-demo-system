@@ -1,5 +1,12 @@
 ---
 
+- name: Get latest Node Exporter version from GitHub API
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/prometheus/node_exporter/releases/latest"
+    return_content: true
+  register: node_exporter_release
+  check_mode: false
+
 - name: Create project folder according to Lab guide
   ansible.builtin.file:
     path: "{{ ansible_facts.user_dir }}/prometheus_node_exporter"
@@ -23,12 +30,20 @@
     dest: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/inventory.ini"
     mode: "0644"
 
+- name: Copy templated group_vars file for project exercise to designated directory structure
+  ansible.builtin.template:
+    src: prometheus_node_exporter_group_vars.yml.j2
+    dest: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/group_vars/prometheus.yml"
+    mode: "0644"
+
 - name: Copy all other files for project exercise to designated directory structure
   ansible.builtin.copy:
     src: "{{ item.file }}"
     dest: "{{ ansible_facts.user_dir }}/prometheus_node_exporter/{{ item.dest }}"
     mode: "0644"
   loop:
+    - file: prometheus_node_exporter_config.ini
+      dest: ansible.cfg
     - file: prometheus_node_exporter_playbook.yml
       dest: playbook.yml
     - file: prometheus_node_exporter_role_main.yml
@@ -39,7 +54,5 @@
       dest: roles/node_exporter/tasks/service.yml
     - file: prometheus_node_exporter_role_template.service.j2
       dest: roles/node_exporter/templates/node_exporter.service.j2
-    - file: prometheus_node_exporter_group_vars.yml
-      dest: roles/node_exporter/group_vars/prometheus.yml
   loop_control:
     label: "{{ item.dest }}"
