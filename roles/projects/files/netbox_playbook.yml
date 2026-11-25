@@ -8,26 +8,26 @@
     - name: Ensure environment variables are set
       ansible.builtin.assert:
         that:
-          - lookup('env', 'NETBOX_API') is url
+          - lookup('env', 'NETBOX_URL') is url
           - lookup('env', 'NETBOX_TOKEN') | length > 0
-        fail_msg: "Environment variables NETBOX_API and NETBOX_TOKEN must be set."
+        fail_msg: "Environment variables NETBOX_URL and NETBOX_TOKEN must be set."
         quiet: true
     - name: Create Tenant group (done by Trainer!)
       netbox.netbox.netbox_tenant_group:
-        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_url: "{{ lookup('env', 'NETBOX_URL') }}"
         netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
         data:
           name: CC Workshop
     - name: Create Site for VMs (done by Trainer!)
       netbox.netbox.netbox_site:
-        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_url: "{{ lookup('env', 'NETBOX_URL') }}"
         netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
         data:
           name: RH Demo Environment
         state: present
     - name: Create platform for RHEL8 (done by Trainer!)
       netbox.netbox.netbox_platform:
-        netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+        netbox_url: "{{ lookup('env', 'NETBOX_URL') }}"
         netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
         data:
           name: Red Hat 8

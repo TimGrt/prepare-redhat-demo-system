@@ -1,48 +1,67 @@
 ---
+- name: Prepare Netbox project
+  vars:
+    netbox_project_folder: "{{ ansible_facts['user_dir'] }}/netbox_project"
+    netbox_ve_name: ve-ansible-netbox
+  block:
 
-- name: Create project folder according to Lab guide for Netbox project
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/netbox_automation"
-    state: directory
-    mode: "0755"
+    - name: Create project folder according to Lab guide for Netbox project
+      ansible.builtin.file:
+        path: "{{ netbox_project_folder }}"
+        state: directory
+        mode: "0755"
 
-- name: Create directory structure according to Lab guide for Netbox project
-  ansible.builtin.file:
-    path: "{{ ansible_facts['user_dir'] }}/netbox_automation/{{ item }}"
-    state: directory
-    mode: "0755"
-  loop:
-    - roles/netbox_automation/tasks
+    - name: Create Python VE
+      ansible.builtin.command:
+        cmd: "{{ ansible_playbook_python }} -m venv ./{{ netbox_ve_name }}"
+        creates: "{{ netbox_ve_name }}/bin/activate"
+        chdir: "{{ netbox_project_folder }}"
 
-- name: Copy inventory file for project exercise to designated directory structure
-  ansible.builtin.copy:
-    src: aci_inventory.ini
-    dest: "{{ ansible_facts['user_dir'] }}/netbox_automation/inventory.ini"
-    mode: "0644"
+    - name: Install ansible-core in VE
+      ansible.builtin.pip:
+        name:
+          - ansible-core==2.16.18
+          - pynetbox
+        executable: "{{ netbox_project_folder }}/{{ netbox_ve_name }}/bin/pip3"
 
-- name: Copy all other files for project exercise to designated directory structure
-  ansible.builtin.copy:
-    src: "{{ item.file }}"
-    dest: "{{ ansible_facts['user_dir'] }}/netbox_automation/{{ item.dest }}"
-    mode: "0644"
-  loop:
-    - file: netbox_inventory.ini
-      dest: roles/netbox_automation/inventory.ini
-    - file: netbox_dynamic_inventory.yml
-      dest: roles/netbox_automation/netbox-inventory.yml
-    - file: netbox_config.cfg
-      dest: roles/netbox_automation/ansible.cfg
-    - file: netbox_playbook.yml
-      dest: roles/netbox_automation/netbox-playbook.yml
-    - file: netbox_role_main.yml
-      dest: roles/netbox_automation/tasks/main.yml
-    - file: netbox_role_tenant.yml
-      dest: roles/netbox_automation/tasks/tenant.yml
-    - file: netbox_role_cluster.yml
-      dest: roles/netbox_automation/tasks/cluster.yml
-  loop_control:
-    label: "{{ item.dest }}"
+    - name: Create directory structure according to Lab guide for Netbox project
+      ansible.builtin.file:
+        path: "{{ netbox_project_folder }}/{{ item }}"
+        state: directory
+        mode: "0755"
+      loop:
+        - roles/netbox_automation/tasks
 
-- name: Token necessary!
-  ansible.builtin.debug:
-    msg: "Go to >> https://demo.netbox.dev/ << and create yourself an API token! Export API endpoint and token as environment variables NETBOX_API and NETBOX_TOKEN. Then you can run the playbook with: ansible-playbook netbox-playbook.yml"
+    - name: Copy all other files for project exercise to designated directory structure
+      ansible.builtin.copy:
+        src: "{{ item.file }}"
+        dest: "{{ netbox_project_folder }}/{{ item.dest }}"
+        mode: "0644"
+      loop:
+        - file: netbox_inventory.ini
+          dest: inventory.ini
+        - file: netbox_dynamic_inventory.yml
+          dest: netbox_dynamic_inventory.yml
+        - file: netbox_config.cfg
+          dest: ansible.cfg
+        - file: netbox_playbook.yml
+          dest: netbox_playbook.yml
+        - file: netbox_role_main.yml
+          dest: roles/netbox_automation/tasks/main.yml
+        - file: netbox_role_tenant.yml
+          dest: roles/netbox_automation/tasks/tenant.yml
+        - file: netbox_role_cluster.yml
+          dest: roles/netbox_automation/tasks/cluster.yml
+      loop_control:
+        label: "{{ item.dest }}"
+
+    - name: Token necessary!
+      ansible.builtin.debug:
+        msg: |
+          Go to >> https://demo.netbox.dev/ << and create yourself an API token!
+          Export API endpoint and token as environment variables NETBOX_URL and NETBOX_TOKEN.
+          >>> export NETBOX_URL='https://demo.netbox.dev/'
+          >>> export NETBOX_TOKEN=''
+          In the Netbox project folder, activate the Python VE:
+          >>> source ve-ansible-netbox/bin/activate
+          Then you can run the playbook with: ansible-playbook netbox-playbook.yml"

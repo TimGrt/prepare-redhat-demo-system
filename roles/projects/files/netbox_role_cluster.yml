@@ -1,7 +1,7 @@
 ---
 - name: Create VM cluster
   netbox.netbox.netbox_cluster:
-    netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+    netbox_url: "{{ lookup('env', 'NETBOX_URL') }}"
     netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
     data:
       name: "{{ tenant_name }} VMs"
@@ -20,7 +20,7 @@
 
 - name: Create VM objects
   netbox.netbox.netbox_virtual_machine:
-    netbox_url: "{{ lookup('env', 'NETBOX_API') }}"
+    netbox_url: "{{ lookup('env', 'NETBOX_URL') }}"
     netbox_token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
     data:
       name: "{{ hostvars[item]['ansible_nodename'] }}"
